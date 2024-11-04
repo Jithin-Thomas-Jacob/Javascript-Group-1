@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="task-manager">
+      <h1>Task Manager</h1>
+      <div class="task-form">
+        <input type="text" id="taskTitle" placeholder="Task Title" required />
+        <input type="text" id="assignedTo" placeholder="Assigned To" required />
+        <input type="date" id="dueDate" required />
+        <div class="priority-selection">
+          <h4>Priority:</h4>
+          <button class="radio high">
+            <input type="radio" name="priority" value="High" required />
+          </button>
+          <button class="radio medium">
+            <input type="radio" name="priority" value="Medium" required />
+          </button>
+          <button class="radio low">
+            <input type="radio" name="priority" value="Low" required />
+          </button>
+        </div>
+        <textarea id="description" placeholder="Description"></textarea>
+        <button onclick="addOrUpdateTask()">Add Task</button>
+      </div>
+    </div>
+
+    <div class="task-show">
+      <div class="search">
+        <label>Search</label>
+        <input
+          type="text"
+          id="search"
+          placeholder="Search Tasks"
+          oninput="filterTasks()"
+        />
+      </div>
+      <div class="taskList">
+        <div id="taskList-high" class="task-list-high">
+          <h1>Task 1</h1>
+          <h3>Assigned To: Jithin</h3>
+          <h3>Priority: High</h3>
+          <h4>Due:</h4>
+          <p>
+            Description: Lorem ipsum dolor, sit amet consectetur adipisicing
+            elit. Reprehenderit aperiam quidem ipsa exercitationem veniam fugit
+            distinctio maxime, corporis quod placeat expedita, nulla aut nostrum
+            voluptatem blanditiis esse quisquam magni? Maxime.
+          </p>
+          <button>Edit</button>
+          <button>Delete</button>
+        </div>
+        <div id="taskList-medium" class="task-list-medium">
+          <h1>Task 2</h1>
+          <h3>Assigned To: Edison</h3>
+          <h3>Priority: Medium</h3>
+          <h4>Due:</h4>
+          <p>
+            Description: Lorem ipsum dolor, sit amet consectetur adipisicing
+            elit. Reprehenderit aperiam quidem ipsa exercitationem veniam fugit
+            distinctio maxime, corporis quod placeat expedita, nulla aut nostrum
+            voluptatem blanditiis esse quisquam magni? Maxime.
+          </p>
+          <button>Edit</button>
+          <button>Delete</button>
+        </div>
+        <div id="taskList-low" class="task-list-low">
+          <h1>Task 3</h1>
+          <h3>Assigned To: Rahul</h3>
+          <h3>Priority: Low</h3>
+          <h4>Due:</h4>
+          <p>
+            Description: Lorem ipsum dolor, sit amet consectetur adipisicing
+            elit. Reprehenderit aperiam quidem ipsa exercitationem veniam fugit
+            distinctio maxime, corporis quod placeat expedita, nulla aut nostrum
+            voluptatem blanditiis esse quisquam magni? Maxime.
+          </p>
+          <button>Edit</button>
+          <button>Delete</button>
+        </div>
+      </div>
+    </div>
+    <!-- <script src="script.js"></script> -->
+  </body>
+</html>

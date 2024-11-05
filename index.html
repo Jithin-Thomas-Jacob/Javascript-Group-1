@@ -10,8 +10,12 @@
     <div class="task-manager">
       <h1>Task Manager</h1>
       <form class="task-form">
+        
+        <h4>Task Title:</h4>
         <input type="text" id="taskTitle" placeholder="Task Title" required />
+        <h4>Assigned To:</h4>
         <input type="text" id="taskAssignedTo" placeholder="Assigned To" required />
+        <h4>Due Date:</h4>
         <input type="date" id="taskDueDate" />
         <div class="priority-selection">
           <h4>Priority:</h4>
@@ -21,6 +25,7 @@
             <option class="high" value="high">High</option>
           </select>
         </div>
+        <h4>Description:</h4>
         <textarea id="taskDescription" placeholder="Description"></textarea>
         <button id="addTaskBtn">Add Task</button>
       </form>

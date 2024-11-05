@@ -22,7 +22,7 @@ function loadTasks() {
 
 function addNewTask() {
   console.log("addNewTask");
-
+  
   if (taskTitle.value !== "" && taskAssignedTo.value !== "") {
     const task = {
       id: Date.now(),
@@ -58,16 +58,16 @@ function createTaskCard(task) {
   const taskCard = document.createElement("div");
   taskCard.className = `task-list-card task-list-${task.priority}`;
   taskCard.innerHTML = `
-     <p class="dueDate">Due date: ${task.dueDate}</p>
-    <small class="${task.priority}">${task.priority}</small> - <small class="assigned"> ${task.assignedTo}</small>
-    <div>
-    <h2>${task.title}</h2>   
-    <p class="description">${task.description}</p></div>
-    <div class="buttons">
-    <button class="editTaskBtn" onclick='editTask(${task.id})'>Edit</button>
-    <button class="deleteTaskBtn" onclick='deleteTask(${task.id})'>Delete</button>
-    </div>
-    `;
+  <p class="dueDate">Due date: ${task.dueDate}</p>
+  <small class="${task.priority}">${task.priority}</small> - <small class="assigned"> ${task.assignedTo}</small>
+  <div>
+  <h2>${task.title}</h2>   
+  <p class="description">${task.description}</p></div>
+  <div class="buttons">
+  <button class="editTaskBtn" onclick='editTask(${task.id})'>Edit</button>
+  <button class="deleteTaskBtn" onclick='deleteTask(${task.id})'>Delete</button>
+  </div>
+  `;
   return taskCard;
 }
 
@@ -76,47 +76,60 @@ function editTask(id) {
   const task = tasks.find((task) => task.id === id);
   
   if (task) {
-      taskTitle.value = task.title,
-      taskAssignedTo.value = task.assignedTo,
-      taskDueDate.value = task.dueDate,
-      taskDescription.value = task.description,
-      taskPriority.value = task.priority;
-      
-      addTaskBtn.removeEventListener("click", addNewTask);
-      addTaskBtn.textContent = "Save Task";
-      addTaskBtn.onclick = function () {
-          saveEditedTask(id);
-        };
-    }
+    taskTitle.value = task.title,
+    taskAssignedTo.value = task.assignedTo,
+    taskDueDate.value = task.dueDate,
+    taskDescription.value = task.description,
+    taskPriority.value = task.priority;
+    
+    addTaskBtn.removeEventListener("click", addNewTask);
+    addTaskBtn.textContent = "Save Task";
+    addTaskBtn.onclick = function () {
+      saveEditedTask(id);
+    };
+  }
 }
 
 function saveEditedTask(id){
-    let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-    const taskIndex = tasks.findIndex(task => task.id === id);
-    
-    if(taskIndex !== -1){
-        tasks[taskIndex].title = taskTitle.value;
-        tasks[taskIndex].assignedTo = taskAssignedTo.value;
-        tasks[taskIndex].dueDate = taskDueDate.value;
-        tasks[taskIndex].description = taskDescription.value;
-        tasks[taskIndex].priority = taskPriority.value;
-        
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-        
-        tasklistContainer.innerHTML = '';
-        loadTasks();
-        
-        addTaskBtn.textContent = 'Add Task';
-        addTaskBtn.addEventListener('click', addNewTask);
-    }
-}
-
-function deleteTask(id){
-    let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-    tasks = tasks.filter(task => task.id !== id);
+  let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+  const taskIndex = tasks.findIndex(task => task.id === id);
+  
+  if(taskIndex !== -1){
+    tasks[taskIndex].title = taskTitle.value;
+    tasks[taskIndex].assignedTo = taskAssignedTo.value;
+    tasks[taskIndex].dueDate = taskDueDate.value;
+    tasks[taskIndex].description = taskDescription.value;
+    tasks[taskIndex].priority = taskPriority.value;
     
     localStorage.setItem('tasks', JSON.stringify(tasks));
     
     tasklistContainer.innerHTML = '';
     loadTasks();
+    
+    addTaskBtn.textContent = 'Add Task';
+    addTaskBtn.addEventListener('click', addNewTask);
+  }
+}
+
+function deleteTask(id){
+  let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+  tasks = tasks.filter(task => task.id !== id);
+  
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  
+  tasklistContainer.innerHTML = '';
+  loadTasks();
+}
+
+function filterTasks(){
+  const searchInput = document.getElementById("search").value.toLowerCase();
+  const tasks = JSON.parse(localStorage.getItem("tasks") || []);
+  tasklistContainer.innerHTML = "";
+  
+  const filteredTasks = tasks.filter(task => 
+    task.title.toLowerCase().includes(searchInput) ||
+    task.assignedTo.toLowerCase().includes(searchInput)
+  );
+  
+  filteredTasks.forEach(task => showTasks(task));
 }

@@ -1,11 +1,12 @@
+const cors = require('cors');
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const app = express();
-const port = 3000;
-
-app.use(bodyParser.json());
+const port = 3001;
+app.use(cors());
+app.use(express.json());
 
 const tasksFilePath = path.join(__dirname, 'data', 'tasks.json');
 
@@ -26,7 +27,7 @@ app.get('/api/tasks', (req, res) => {
   res.json(tasks);
 });
 
-app.post('/api/tasks', (req, res) => {
+app.post('/api/newtask', (req, res) => {
   const tasks = readTasks();
   const newTask = {
     id: Date.now(),
@@ -41,7 +42,7 @@ app.post('/api/tasks', (req, res) => {
   res.status(201).json(newTask);
 });
 
-app.put('/api/tasks/:id', (req, res) => {
+app.put('/api/task/:id', (req, res) => {
   const tasks = readTasks();
   const taskIndex = tasks.findIndex(task => task.id === parseInt(req.params.id));
 
@@ -61,17 +62,20 @@ app.put('/api/tasks/:id', (req, res) => {
   }
 });
 
-app.delete('/api/tasks/:id', (req, res) => {
+app.delete('/api/task/:id', (req, res) => {
   let tasks = readTasks();
-  tasks = tasks.filter(task => task.id !== parseInt(req.params.id));
+  const filteredTasks = tasks.filter(task => task.id !== parseInt(req.params.id));
 
-  if (tasks.length !== tasks.length) {
-    writeTasks(tasks);
+  if (tasks.length !== filteredTasks.length) {
+    writeTasks(filteredTasks);
     res.status(204).send();
   } else {
     res.status(404).json({ message: 'Task not found' });
   }
 });
+app.use(cors({
+  origin: 'http://127.0.0.1:5500'
+}));
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);

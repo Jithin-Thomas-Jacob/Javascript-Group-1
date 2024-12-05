@@ -1,0 +1,15 @@
+# Ignorar la carpeta node_modules (backend)
+server/node_modules/
+
+# Ignorar la carpeta de dependencias de frontend si estás usando algo como npm o yarn
+web/node_modules/
+
+# Archivos de configuración del IDE (VSCode, etc.)
+.vscode/
+.idea/
+
+# Archivos generados automáticamente (logs, build, etc.)
+*.log
+*.env
+build/
+dist/

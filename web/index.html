@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="task-manager">
+      <h1>Task Manager</h1>
+      <form id="taskForm" class="task-form">
+        
+        <h4>Task Title:</h4>
+        <input type="text" id="taskTitle" placeholder="Task Title" required />
+        <h4>Assigned To:</h4>
+        <input type="text" id="taskAssignedTo" placeholder="Assigned To" required />
+        <h4>Due Date:</h4>
+        <input type="date" id="taskDueDate" />
+        <div class="priority-selection">
+          <h4>Priority:</h4>
+          <select name="priority" id="taskPriority">
+            <option class="low" value="low" default>Low</option>
+            <option class="medium" value="medium">Medium</option>
+            <option class="high" value="high">High</option>
+          </select>
+        </div>
+        <h4>Description:</h4>
+        <textarea id="taskDescription" placeholder="Description"></textarea>
+        <button id="addTaskBtn">Add Task</button>
+      </form>
+    </div>
+
+    <div class="task-show">
+      <div class="search">
+        <label>Search</label>
+        <input
+          type="text"
+          id="search"
+          placeholder="Search Tasks"
+          oninput="filterTasks()"
+        />
+      </div>
+      <div id="taskList">
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

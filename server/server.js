@@ -1,12 +1,17 @@
-const cors = require('cors');
+
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const bodyParser = require('body-parser');
 const app = express();
 const port = 3001;
-app.use(cors());
+
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, '../web')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../web/index.html'));
+});
 
 const tasksFilePath = path.join(__dirname, 'data', 'tasks.json');
 
@@ -42,6 +47,17 @@ app.post('/api/newtask', (req, res) => {
   res.status(201).json(newTask);
 });
 
+app.get('/api/task/:id', (req, res) => {
+  const tasks = readTasks();
+  const task = tasks.find(task => task.id === parseInt(req.params.id, 10));
+
+  if(task){
+    res.json(task);
+  } else {
+    res.status(404).json({message: 'Task not found'});
+  }
+})
+
 app.put('/api/task/:id', (req, res) => {
   const tasks = readTasks();
   const taskIndex = tasks.findIndex(task => task.id === parseInt(req.params.id));
@@ -73,10 +89,7 @@ app.delete('/api/task/:id', (req, res) => {
     res.status(404).json({ message: 'Task not found' });
   }
 });
-app.use(cors({
-  origin: 'http://127.0.0.1:5500'
-}));
 
 app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
+  console.log(`Sever running on http://localhost:${port}`);
 });

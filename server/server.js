@@ -1,25 +1,24 @@
-
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
 const app = express();
 const port = 3001;
 
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, '../web')));
+app.use(express.static(path.join(__dirname, "../web")));
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../web/index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../web/index.html"));
 });
 
-const tasksFilePath = path.join(__dirname, 'data', 'tasks.json');
+const tasksFilePath = path.join(__dirname, "data", "tasks.json");
 
 function readTasks() {
   if (!fs.existsSync(tasksFilePath)) {
     fs.writeFileSync(tasksFilePath, JSON.stringify([]));
   }
-  const data = fs.readFileSync(tasksFilePath, 'utf8');
+  const data = fs.readFileSync(tasksFilePath, "utf8");
   return JSON.parse(data);
 }
 
@@ -27,12 +26,12 @@ function writeTasks(tasks) {
   fs.writeFileSync(tasksFilePath, JSON.stringify(tasks, null, 2));
 }
 
-app.get('/api/tasks', (req, res) => {
+app.get("/api/tasks", (req, res) => {
   const tasks = readTasks();
   res.json(tasks);
 });
 
-app.post('/api/newtask', (req, res) => {
+app.post("/api/newtask", (req, res) => {
   const tasks = readTasks();
   const newTask = {
     id: Date.now(),
@@ -47,20 +46,22 @@ app.post('/api/newtask', (req, res) => {
   res.status(201).json(newTask);
 });
 
-app.get('/api/task/:id', (req, res) => {
+app.get("/api/task/:id", (req, res) => {
   const tasks = readTasks();
-  const task = tasks.find(task => task.id === parseInt(req.params.id, 10));
+  const task = tasks.find((task) => task.id === parseInt(req.params.id, 10));
 
-  if(task){
+  if (task) {
     res.json(task);
   } else {
-    res.status(404).json({message: 'Task not found'});
+    res.status(404).json({ message: "Task not found" });
   }
-})
+});
 
-app.put('/api/task/:id', (req, res) => {
+app.put("/api/task/:id", (req, res) => {
   const tasks = readTasks();
-  const taskIndex = tasks.findIndex(task => task.id === parseInt(req.params.id));
+  const taskIndex = tasks.findIndex(
+    (task) => task.id === parseInt(req.params.id)
+  );
 
   if (taskIndex !== -1) {
     tasks[taskIndex] = {
@@ -74,19 +75,21 @@ app.put('/api/task/:id', (req, res) => {
     writeTasks(tasks);
     res.json(tasks[taskIndex]);
   } else {
-    res.status(404).json({ message: 'Task not found' });
+    res.status(404).json({ message: "Task not found" });
   }
 });
 
-app.delete('/api/task/:id', (req, res) => {
+app.delete("/api/task/:id", (req, res) => {
   let tasks = readTasks();
-  const filteredTasks = tasks.filter(task => task.id !== parseInt(req.params.id));
+  const filteredTasks = tasks.filter(
+    (task) => task.id !== parseInt(req.params.id)
+  );
 
   if (tasks.length !== filteredTasks.length) {
     writeTasks(filteredTasks);
     res.status(204).send();
   } else {
-    res.status(404).json({ message: 'Task not found' });
+    res.status(404).json({ message: "Task not found" });
   }
 });
 

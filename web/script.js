@@ -10,13 +10,13 @@ const taskDescription = document.getElementById("taskDescription");
 const taskPriority = document.getElementById("taskPriority");
 
 function loadTasks() {
-  fetch('http://localhost:3001/api/tasks')
-    .then(response => response.json())
-    .then(tasks => {
-      tasklistContainer.innerHTML = '';
-      tasks.forEach(task => showTasks(task));
+  fetch("http://localhost:3001/api/tasks")
+    .then((response) => response.json())
+    .then((tasks) => {
+      tasklistContainer.innerHTML = "";
+      tasks.forEach((task) => showTasks(task));
     })
-    .catch(error => console.log('Error:', error));
+    .catch((error) => console.log("Error:", error));
 }
 
 function addNewTask() {
@@ -29,17 +29,17 @@ function addNewTask() {
       priority: taskPriority.value,
     };
 
-    fetch('http://localhost:3001/api/newtask', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(task)
+    fetch("http://localhost:3001/api/newtask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(task),
     })
-    .then(response => response.json())
-    .then(newTask => {
-      showTasks(newTask);
-      resetForm();
-    })
-    .catch(error => console.log('Error:', error));
+      .then((response) => response.json())
+      .then((newTask) => {
+        showTasks(newTask);
+        resetForm();
+      })
+      .catch((error) => console.log("Error:", error));
   }
 }
 
@@ -71,8 +71,8 @@ function createTaskCard(task) {
 
 function editTask(id) {
   fetch(`http://localhost:3001/api/task/${id}`)
-    .then(response => response.json())
-    .then(task => {
+    .then((response) => response.json())
+    .then((task) => {
       taskTitle.value = task.title;
       taskAssignedTo.value = task.assignedTo;
       taskDueDate.value = task.dueDate;
@@ -85,7 +85,7 @@ function editTask(id) {
         saveEditedTask(id);
       };
     })
-    .catch(error => console.log('Error:', error));
+    .catch((error) => console.log("Error:", error));
 }
 
 function saveEditedTask(id) {
@@ -98,51 +98,52 @@ function saveEditedTask(id) {
   };
 
   fetch(`http://localhost:3001/api/task/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(updatedTask)
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatedTask),
   })
-  .then(response => response.json())
-  .then(updatedTask => {
-    tasklistContainer.innerHTML = '';
-    loadTasks();
-    addTaskBtn.textContent = 'Add Task';
-    addTaskBtn.addEventListener('click', addNewTask);
-  })
-  .catch(error => console.log('Error:', error));
+    .then((response) => response.json())
+    .then((updatedTask) => {
+      tasklistContainer.innerHTML = "";
+      loadTasks();
+      addTaskBtn.textContent = "Add Task";
+      addTaskBtn.addEventListener("click", addNewTask);
+    })
+    .catch((error) => console.log("Error:", error));
 }
 
 function deleteTask(id) {
   console.log("🚀 ~ deleteTask ~ id", id);
   fetch(`http://localhost:3001/api/task/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
   })
-  .then(() => {
-    tasklistContainer.innerHTML = '';
-    loadTasks();
-  })
-  .catch(error => console.log('Error:', error));
+    .then(() => {
+      tasklistContainer.innerHTML = "";
+      loadTasks();
+    })
+    .catch((error) => console.log("Error:", error));
 }
 
 function resetForm() {
-  taskTitle.value = '';
-  taskAssignedTo.value = '';
-  taskDueDate.value = '';
-  taskDescription.value = '';
-  taskPriority.value = 'low';
+  taskTitle.value = "";
+  taskAssignedTo.value = "";
+  taskDueDate.value = "";
+  taskDescription.value = "";
+  taskPriority.value = "low";
 }
 
 function filterTasks() {
   const searchInput = document.getElementById("search").value.toLowerCase();
-  fetch('http://localhost:3001/api/tasks')
-    .then(response => response.json())
-    .then(tasks => {
-      const filteredTasks = tasks.filter(task =>
-        task.title.toLowerCase().includes(searchInput) ||
-        task.assignedTo.toLowerCase().includes(searchInput)
+  fetch("http://localhost:3001/api/tasks")
+    .then((response) => response.json())
+    .then((tasks) => {
+      const filteredTasks = tasks.filter(
+        (task) =>
+          task.title.toLowerCase().includes(searchInput) ||
+          task.assignedTo.toLowerCase().includes(searchInput)
       );
       tasklistContainer.innerHTML = "";
-      filteredTasks.forEach(task => showTasks(task));
+      filteredTasks.forEach((task) => showTasks(task));
     })
-    .catch(error => console.log('Error:', error));
+    .catch((error) => console.log("Error:", error));
 }
